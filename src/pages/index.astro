@@ -1,16 +1,58 @@
 ---
+import CardOverview from "../components/CardOverview.astro";
+import CardLayout from "../layout/CardLayout.astro";
+import "../styles/style.css";
 
+const data = await fetch("https://iquwaksrvuailrbwzeqm.supabase.co/rest/v1/paintings", {
+  method: "GET",
+  headers: {
+    apikey:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxdXdha3NydnVhaWxyYnd6ZXFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTU2MDgyNzEsImV4cCI6MjAzMTE4NDI3MX0.TAN2h-nqq62fwRfrJesymEvsWNpJv_HsJnaiA0kzups",
+  },
+}).then((res) => res.json());
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<CardLayout title="Card test">
+  <h1 class="title">Test af sorteringsfunktion</h1>
+
+  <div>
+    <button>Lærred</button>
+    <button>Plakat</button>
+    <button>Tryk</button>
+    <button>Bog</button>
+    <button>Serie</button>
+  </div>
+
+  <section class="cards_list">
+    {
+      data.map((data) => {
+        return <CardOverview data={data} />;
+      })
+    }
+  </section>
+</CardLayout>
+
+<script>
+  // src/components/CardOverview.astro
+  const button = document.querySelectorAll("button");
+
+  button.forEach((data) => {
+    data.addEventListener("click", () => {
+      document.querySelectorAll(".card").forEach((element) => element.classList.add("hide"));
+
+      if (data.textContent === "Lærred") {
+        document.querySelectorAll(".lærred").forEach((element) => element.classList.remove("hide"));
+      } else if (data.textContent === "Plakat") {
+        document.querySelectorAll(".plakat").forEach((element) => element.classList.remove("hide"));
+      } else if (data.textContent === "Tryk") {
+        document.querySelectorAll(".tryk").forEach((element) => element.classList.remove("hide"));
+      } else if (data.textContent === "Serie") {
+        document.querySelectorAll(".serie").forEach((element) => element.classList.remove("hide"));
+      } else if (data.textContent === "Bog") {
+        document.querySelectorAll(".bog").forEach((element) => element.classList.remove("hide"));
+      } else {
+        document.querySelectorAll("article").forEach((element) => element.classList.add("hide"));
+      }
+    });
+  });
+</script>
